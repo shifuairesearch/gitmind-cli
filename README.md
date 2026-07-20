@@ -22,10 +22,10 @@
 
 `uv` 和 Python 3.10+ 不需要同事事先裝好。`install.sh` 會自動檢查；缺 `uv` 會直接下載安裝，缺 Python 3.10+ 會用 `uv` 安裝 managed Python。
 
-解壓縮 source package 或 clone repo 後進入專案資料夾。GitHub repo 目前是 `gmind`，但對外命令名稱是 `gitmind`：
+解壓縮 source package 或 clone repo 後進入專案資料夾。GitHub repo 是 `gitmind-cli`，對外命令名稱是 `gitmind`：
 
 ```bash
-cd gmind
+cd gitmind-cli
 ```
 
 開發模式可以直接用 `uv` 跑：
