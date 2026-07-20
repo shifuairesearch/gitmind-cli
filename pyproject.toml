@@ -9,6 +9,7 @@ dependencies = [
 ]
 
 [project.scripts]
+gitmind = "gmind.cli:main"
 gmind = "gmind.cli:main"
 
 [build-system]

@@ -6,8 +6,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-CONFIG_DIR = Path(os.environ.get("GMIND_CONFIG_DIR", Path.home() / ".config" / "gmind"))
+CONFIG_DIR = Path(os.environ.get("GITMIND_CONFIG_DIR") or os.environ.get("GMIND_CONFIG_DIR", Path.home() / ".config" / "gitmind"))
 CONFIG_FILE = CONFIG_DIR / "config.json"
+LEGACY_CONFIG_FILE = Path.home() / ".config" / "gmind" / "config.json"
 
 
 @dataclass(frozen=True)
@@ -45,11 +46,12 @@ def load_token(explicit_token: str | None = None) -> TokenInfo:
     env_token = normalize_token(os.environ.get("GITMIND_TOKEN"))
     if env_token:
         return TokenInfo(env_token, "GITMIND_TOKEN")
-    if CONFIG_FILE.exists():
-        data = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
-        file_token = normalize_token(data.get("bearer_token") or data.get("api_token"))
-        if file_token:
-            return TokenInfo(file_token, str(CONFIG_FILE))
+    for path in (CONFIG_FILE, LEGACY_CONFIG_FILE):
+        if path.exists():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            file_token = normalize_token(data.get("bearer_token") or data.get("api_token"))
+            if file_token:
+                return TokenInfo(file_token, str(path))
     return TokenInfo(None, None)
 
 

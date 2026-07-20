@@ -1,6 +1,6 @@
-# gmind
+# gitmind
 
-`gmind` 是給 ShiFu 同事和 AI agent 使用的 GitMind 本機 CLI。
+`gitmind` 是給 ShiFu 同事和 AI agent 使用的 GitMind 本機 CLI。
 
 它可以在不分享密碼、不把瀏覽器 cookie 貼到聊天裡的前提下，完成這幾件事：
 
@@ -18,11 +18,11 @@
 - `bash`。
 - `curl`：只有在電腦還沒有 `uv`、需要自動下載安裝時才會用到。
 - 可連線到 GitMind / `gw.aoscdn.com`。
-- 若要自動擷取登入 session：建議先在 Chrome 登入 GitMind。Comet 也支援，但放在備用選項；其他環境可用 `gmind auth set-token` 手動設定。
+- 若要自動擷取登入 session：建議先在 Chrome 登入 GitMind。Comet 也支援，但放在備用選項；其他環境可用 `gitmind auth set-token` 手動設定。
 
 `uv` 和 Python 3.10+ 不需要同事事先裝好。`install.sh` 會自動檢查；缺 `uv` 會直接下載安裝，缺 Python 3.10+ 會用 `uv` 安裝 managed Python。
 
-解壓縮 source package 後進入資料夾：
+解壓縮 source package 或 clone repo 後進入專案資料夾。GitHub repo 目前是 `gmind`，但對外命令名稱是 `gitmind`：
 
 ```bash
 cd gmind
@@ -31,44 +31,49 @@ cd gmind
 開發模式可以直接用 `uv` 跑：
 
 ```bash
-uv run gmind --help
+uv run gitmind --help
 ```
 
-也可以安裝一個本機 wrapper，之後從任何資料夾都能執行 `gmind`：
+也可以安裝一個本機 wrapper，之後從任何資料夾都能執行 `gitmind`：
 
 ```bash
 bash install.sh
-gmind doctor --json
+gitmind doctor --json
 ```
 
 `install.sh` 全程使用中文提示，會自動處理：
 
-- 檢查目前資料夾是不是 gmind 專案。
+- 檢查目前資料夾是不是 gitmind 專案。
 - 找不到 `uv` 時，自動用 `curl` 安裝 `uv`。
 - 找不到 Python 3.10+ 時，自動用 `uv python install 3.12` 補齊。
-- 安裝後跑一次 `gmind --help` smoke test。
+- 安裝後跑一次 `gitmind --help` smoke test。
 
 `install.sh` 會依照同事自己的 `$HOME` 安裝，不會寫死任何人的本機路徑。預設會安裝：
 
 ```text
+~/.local/bin/gitmind
 ~/.local/bin/gmind
-~/.agents/skills/gmind/SKILL.md
-~/.claude/skills/gmind/SKILL.md
+~/.agents/skills/gitmind/SKILL.md
+~/.claude/skills/gitmind/SKILL.md
 ```
 
-其中 `~/.agents/skills/gmind/SKILL.md` 給 Codex 使用，`~/.claude/skills/gmind/SKILL.md` 給 Claude Code 使用。這讓支援 skills 的 agent 之後能自動知道怎麼使用 `gmind`。
+其中 `~/.agents/skills/gitmind/SKILL.md` 給 Codex 使用，`~/.claude/skills/gitmind/SKILL.md` 給 Claude Code 使用。這讓支援 skills 的 agent 之後能自動知道怎麼使用 `gitmind`。
 
-單純執行 `gmind` 命令不會自動安裝或修改 skill；只有跑 `install.sh` 時才會做這件事。
+`~/.local/bin/gmind` 只是短命令 alias，給已經習慣舊名稱的人使用；文件、skill 和 prompt 都建議使用 `gitmind`。
+
+`install.sh` 會移除舊版 `~/.agents/skills/gmind` 和 `~/.claude/skills/gmind` skill 路徑，避免 agent 繼續顯示 `Skill(gmind)`。
+
+單純執行 `gitmind` 命令不會自動安裝或修改 skill；只有跑 `install.sh` 時才會做這件事。
 
 進階安裝選項：
 
 ```bash
-GMIND_BIN_DIR="$HOME/bin" bash install.sh
-GMIND_AUTO_INSTALL_UV=0 bash install.sh
-GMIND_INSTALL_CODEX_SKILL=0 bash install.sh
-GMIND_INSTALL_CLAUDE_SKILL=0 bash install.sh
-GMIND_CODEX_SKILL_DIR="$HOME/.agents/skills/gmind" bash install.sh
-GMIND_CLAUDE_SKILL_DIR="$HOME/.claude/skills/gmind" bash install.sh
+GITMIND_BIN_DIR="$HOME/bin" bash install.sh
+GITMIND_AUTO_INSTALL_UV=0 bash install.sh
+GITMIND_INSTALL_CODEX_SKILL=0 bash install.sh
+GITMIND_INSTALL_CLAUDE_SKILL=0 bash install.sh
+GITMIND_CODEX_SKILL_DIR="$HOME/.agents/skills/gitmind" bash install.sh
+GITMIND_CLAUDE_SKILL_DIR="$HOME/.claude/skills/gitmind" bash install.sh
 ```
 
 ## 第一次登入
@@ -76,7 +81,7 @@ GMIND_CLAUDE_SKILL_DIR="$HOME/.claude/skills/gmind" bash install.sh
 一般同事建議用 Chrome。請先用 Chrome 打開 GitMind 並確認已登入，然後回到終端機執行：
 
 ```bash
-gmind auth import-browser --browser chrome
+gitmind auth import-browser --browser chrome
 ```
 
 這個指令會從你自己電腦上已登入的 Chrome 裡找到 GitMind 的登入狀態。它不會讀你的 GitMind 密碼，也不需要你把 cookie 貼給別人。
@@ -84,13 +89,13 @@ gmind auth import-browser --browser chrome
 如果你是用 Comet 登入 GitMind，才改用：
 
 ```bash
-gmind auth import-browser --browser comet
+gitmind auth import-browser --browser comet
 ```
 
 確認登入狀態：
 
 ```bash
-gmind doctor --json
+gitmind doctor --json
 ```
 
 正常會看到 `ok: true`，而且 token 只會顯示遮蔽版本，不會印出完整 token。
@@ -98,7 +103,7 @@ gmind doctor --json
 如果瀏覽器 session 擷取失敗，手動從 GitMind 網頁的 DevTools Network 複製任一個 `gw.aoscdn.com` request 的 `Authorization` header，然後執行：
 
 ```bash
-gmind auth set-token
+gitmind auth set-token
 ```
 
 ## 搜尋與讀取心智圖
@@ -106,25 +111,25 @@ gmind auth set-token
 搜尋檔案：
 
 ```bash
-gmind files search "AI 研究所" --json
+gitmind files search "AI 研究所" --json
 ```
 
 把心智圖名稱解析成穩定的 `file_guid`：
 
 ```bash
-gmind minds resolve "AI 研究所 - 週會課程規劃_Irene（勿動）" --json
+gitmind minds resolve "AI 研究所 - 週會課程規劃_Irene（勿動）" --json
 ```
 
 匯出成 Markdown：
 
 ```bash
-gmind minds export-name "AI 研究所 - 週會課程規劃_Irene（勿動）" --format md --out ./mind.md
+gitmind minds export-name "AI 研究所 - 週會課程規劃_Irene（勿動）" --format md --out ./mind.md
 ```
 
 匯出成 GitMind 原始 JSON：
 
 ```bash
-gmind minds export-name "AI 研究所 - 週會課程規劃_Irene（勿動）" --format json --out ./mind.json
+gitmind minds export-name "AI 研究所 - 週會課程規劃_Irene（勿動）" --format json --out ./mind.json
 ```
 
 ## 從 Markdown 建立新心智圖
@@ -143,7 +148,7 @@ Markdown 格式用一般大綱即可：
 建立新圖：
 
 ```bash
-gmind minds create --name "Claude 討論整理" --from-md ./outline.md
+gitmind minds create --name "Claude 討論整理" --from-md ./outline.md
 ```
 
 ## 更新既有心智圖
@@ -151,7 +156,7 @@ gmind minds create --name "Claude 討論整理" --from-md ./outline.md
 更新前先 dry-run：
 
 ```bash
-gmind minds update-name "既有圖名稱" --from-md ./outline.md --dry-run
+gitmind minds update-name "既有圖名稱" --from-md ./outline.md --dry-run
 ```
 
 dry-run 會顯示：
@@ -164,14 +169,14 @@ dry-run 會顯示：
 確認沒問題後才真的更新：
 
 ```bash
-gmind minds update-name "既有圖名稱" --from-md ./outline.md --confirm
+gitmind minds update-name "既有圖名稱" --from-md ./outline.md --confirm
 ```
 
 `--confirm` 會先自動備份原圖：
 
 ```text
-~/.local/share/gmind/backups/{圖名}-{file_guid}-{時間}.json
-~/.local/share/gmind/backups/{圖名}-{file_guid}-{時間}.md
+~/.local/share/gitmind/backups/{圖名}-{file_guid}-{時間}.json
+~/.local/share/gitmind/backups/{圖名}-{file_guid}-{時間}.md
 ```
 
 備份成功後才會上傳新版內容。如果備份失敗，更新會停止。
@@ -179,17 +184,17 @@ gmind minds update-name "既有圖名稱" --from-md ./outline.md --confirm
 ## 常用命令
 
 ```bash
-gmind doctor --json
-gmind auth import-browser --browser chrome
-gmind files list --limit 20 --json
-gmind files search "關鍵字" --json
-gmind files tree --max-depth 3 --json
-gmind minds resolve "心智圖名稱" --json
-gmind minds get <file_guid> --json
-gmind minds export <file_guid> --format md --out ./mind.md
-gmind minds create --name "新圖" --from-md ./outline.md
-gmind minds update-name "既有圖名稱" --from-md ./outline.md --dry-run
-gmind minds update-name "既有圖名稱" --from-md ./outline.md --confirm
+gitmind doctor --json
+gitmind auth import-browser --browser chrome
+gitmind files list --limit 20 --json
+gitmind files search "關鍵字" --json
+gitmind files tree --max-depth 3 --json
+gitmind minds resolve "心智圖名稱" --json
+gitmind minds get <file_guid> --json
+gitmind minds export <file_guid> --format md --out ./mind.md
+gitmind minds create --name "新圖" --from-md ./outline.md
+gitmind minds update-name "既有圖名稱" --from-md ./outline.md --dry-run
+gitmind minds update-name "既有圖名稱" --from-md ./outline.md --confirm
 ```
 
 ## 安全邊界
@@ -207,23 +212,23 @@ gmind minds update-name "既有圖名稱" --from-md ./outline.md --confirm
 先檢查狀態：
 
 ```bash
-gmind doctor --json
+gitmind doctor --json
 ```
 
 讀圖前先 resolve，避免名稱模糊：
 
 ```bash
-gmind minds resolve "心智圖名稱" --json
+gitmind minds resolve "心智圖名稱" --json
 ```
 
 更新圖以前一定先 dry-run：
 
 ```bash
-gmind minds update-name "心智圖名稱" --from-md ./outline.md --dry-run
+gitmind minds update-name "心智圖名稱" --from-md ./outline.md --dry-run
 ```
 
 只有在使用者明確同意覆蓋時，才使用：
 
 ```bash
-gmind minds update-name "心智圖名稱" --from-md ./outline.md --confirm
+gitmind minds update-name "心智圖名稱" --from-md ./outline.md --confirm
 ```

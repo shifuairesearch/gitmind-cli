@@ -1,4 +1,4 @@
-# gmind smoke test
+# gitmind smoke test
 
 - Purpose
   - Verify Markdown conversion

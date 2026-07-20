@@ -11,7 +11,7 @@ from .client import GitMindClient, GitMindError
 from .markdown import normalize_content, parse_markdown_outline
 
 
-DEFAULT_BACKUP_DIR = Path.home() / ".local" / "share" / "gmind" / "backups"
+DEFAULT_BACKUP_DIR = Path.home() / ".local" / "share" / "gitmind" / "backups"
 
 
 def safe_name(name: str, fallback: str = "mind") -> str:

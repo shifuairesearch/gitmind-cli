@@ -47,7 +47,7 @@ def get_client(args: argparse.Namespace) -> tuple[GitMindClient | None, dict[str
 def require_client(args: argparse.Namespace) -> GitMindClient:
     client, _auth = get_client(args)
     if not client:
-        raise GitMindError("找不到 GitMind 登入狀態。請先執行：gmind auth import-browser --browser chrome")
+        raise GitMindError("找不到 GitMind 登入狀態。請先執行：gitmind auth import-browser --browser chrome")
     return client
 
 
@@ -60,17 +60,17 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         "endpoint": {"reachable": False},
     }
     if not client:
-        checks["error"] = "missing auth; run gmind auth import-browser --browser chrome"
+        checks["error"] = "missing auth; run gitmind auth import-browser --browser chrome"
         if wants_json(args):
             json_out(checks)
         else:
             print("尚未完成 GitMind 登入設定。")
             print()
             print("請先用 Chrome 打開 GitMind 並確認已登入，然後執行：")
-            print("  gmind auth import-browser --browser chrome")
+            print("  gitmind auth import-browser --browser chrome")
             print()
             print("如果你是用 Comet 登入 GitMind，請改執行：")
-            print("  gmind auth import-browser --browser comet")
+            print("  gitmind auth import-browser --browser comet")
         return 1
     try:
         payload = client.get("/files", {"per_page": 1})
@@ -83,23 +83,23 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         if wants_json(args):
             json_out(checks)
         else:
-            print("gmind 已可連上你的 GitMind。")
+            print("GitMind CLI 已可連上你的 GitMind。")
             print(f"設定來源：{auth.get('source')}")
             print(f"登入狀態：{payload.get('message')}")
             print()
             print("接下來可以試試：")
-            print("  gmind files search \"關鍵字\" --json")
+            print("  gitmind files search \"關鍵字\" --json")
         return 0 if checks["ok"] else 1
     except GitMindError as exc:
         checks["endpoint"] = {"reachable": False, "message": str(exc), "http_status": exc.http_status}
         if wants_json(args):
             json_out(checks)
         else:
-            print("gmind 目前連不上 GitMind。")
+            print("GitMind CLI 目前連不上 GitMind。")
             print(f"原因：{exc}")
             print()
             print("可以先確認網路，或重新匯入登入狀態：")
-            print("  gmind auth import-browser --browser chrome")
+            print("  gitmind auth import-browser --browser chrome")
         return 1
 
 
@@ -118,10 +118,10 @@ def cmd_auth_import_browser(args: argparse.Namespace) -> int:
         print(f"設定已儲存到：{path}")
         print()
         print("下一步請執行：")
-        print("  gmind doctor")
+        print("  gitmind doctor")
         print()
         print("如果你想讓 AI agent 讀取結果，可以使用：")
-        print("  gmind doctor --json")
+        print("  gitmind doctor --json")
     return 0
 
 
@@ -143,7 +143,7 @@ def cmd_auth_set_token(args: argparse.Namespace) -> int:
         print(f"設定已儲存到：{normalized}")
         print()
         print("下一步請執行：")
-        print("  gmind doctor")
+        print("  gitmind doctor")
     else:
         print("GitMind token 已儲存，但驗證沒有通過。")
         print(f"GitMind 回應：{message}")
@@ -324,8 +324,8 @@ def add_common_file_args(parser: argparse.ArgumentParser) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="gmind", description="Read and write GitMind mind maps")
-    parser.add_argument("--version", action="version", version=f"gmind {__version__}")
+    parser = argparse.ArgumentParser(prog="gitmind", description="Read and write GitMind mind maps")
+    parser.add_argument("--version", action="version", version=f"gitmind {__version__}")
     parser.add_argument("--token", help=argparse.SUPPRESS)
     sub = parser.add_subparsers(dest="command")
 
