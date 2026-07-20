@@ -18,7 +18,7 @@
 - `bash`。
 - `curl`：只有在電腦還沒有 `uv`、需要自動下載安裝時才會用到。
 - 可連線到 GitMind / `gw.aoscdn.com`。
-- 若要自動擷取登入 session：需要已在 Comet 或 Chrome 登入 GitMind。目前自動擷取主要支援 macOS 的 Chromium profile；其他環境可用 `gmind auth set-token` 手動設定。
+- 若要自動擷取登入 session：建議先在 Chrome 登入 GitMind。Comet 也支援，但放在備用選項；其他環境可用 `gmind auth set-token` 手動設定。
 
 `uv` 和 Python 3.10+ 不需要同事事先裝好。`install.sh` 會自動檢查；缺 `uv` 會直接下載安裝，缺 Python 3.10+ 會用 `uv` 安裝 managed Python。
 
@@ -73,16 +73,18 @@ GMIND_CLAUDE_SKILL_DIR="$HOME/.claude/skills/gmind" bash install.sh
 
 ## 第一次登入
 
-如果你已經在 Comet 瀏覽器登入 GitMind：
-
-```bash
-gmind auth import-browser --browser comet
-```
-
-如果你用 Chrome：
+一般同事建議用 Chrome。請先用 Chrome 打開 GitMind 並確認已登入，然後回到終端機執行：
 
 ```bash
 gmind auth import-browser --browser chrome
+```
+
+這個指令會從你自己電腦上已登入的 Chrome 裡找到 GitMind 的登入狀態。它不會讀你的 GitMind 密碼，也不需要你把 cookie 貼給別人。
+
+如果你是用 Comet 登入 GitMind，才改用：
+
+```bash
+gmind auth import-browser --browser comet
 ```
 
 確認登入狀態：
@@ -178,7 +180,7 @@ gmind minds update-name "既有圖名稱" --from-md ./outline.md --confirm
 
 ```bash
 gmind doctor --json
-gmind auth import-browser --browser comet
+gmind auth import-browser --browser chrome
 gmind files list --limit 20 --json
 gmind files search "關鍵字" --json
 gmind files tree --max-depth 3 --json

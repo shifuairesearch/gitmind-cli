@@ -16,16 +16,16 @@ command -v gmind
 gmind doctor --json
 ```
 
-If auth is missing and the user is logged in with Comet:
-
-```bash
-gmind auth import-browser --browser comet
-```
-
-If the user uses Chrome:
+If auth is missing, prefer Chrome for typical teammates:
 
 ```bash
 gmind auth import-browser --browser chrome
+```
+
+Use Comet only when the user says they are logged in with Comet:
+
+```bash
+gmind auth import-browser --browser comet
 ```
 
 ## Safe Read Flow

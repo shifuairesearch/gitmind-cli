@@ -114,5 +114,11 @@ fi
 
 echo
 echo "下一步："
-echo "  gmind auth import-browser --browser comet"
-echo "  gmind doctor --json"
+echo "1. 先用 Chrome 打開 GitMind，確認你已經登入。"
+echo "2. 回到終端機執行："
+echo "     gmind auth import-browser --browser chrome"
+echo "3. 確認 gmind 可以連上你的 GitMind："
+echo "     gmind doctor"
+echo
+echo "如果你不是用 Chrome，而是用 Comet 登入 GitMind，可以改跑："
+echo "     gmind auth import-browser --browser comet"
