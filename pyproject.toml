@@ -1,0 +1,20 @@
+[project]
+name = "gmind"
+version = "0.1.0"
+description = "Local CLI for reading and writing GitMind mind maps"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "oss2>=2.18.0",
+]
+
+[project.scripts]
+gmind = "gmind.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
