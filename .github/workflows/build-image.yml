@@ -32,4 +32,4 @@ jobs:
         run: |
           docker run --rm --network=none --entrypoint python3 \
             ghcr.io/shifuairesearch/gitmind-cli@${{ steps.build.outputs.digest }} \
-            /opt/gitmind/smoke.py
+            /usr/local/lib/gitmind/smoke.py

@@ -10,7 +10,7 @@ with tempfile.TemporaryDirectory(prefix="gitmind-smoke-") as home:
     env = {"PATH": os.environ["PATH"], "HOME": home, "GITMIND_CONFIG_DIR": home}
     subprocess.run(["gitmind", "--help"], env=env, check=True, stdout=subprocess.DEVNULL)
     subprocess.run(
-        ["/opt/gitmind/.venv/bin/python", "-c", "import gmind, oss2"],
+        ["/usr/local/lib/gitmind/.venv/bin/python", "-c", "import gmind, oss2"],
         env=env,
         check=True,
     )
